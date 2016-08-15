@@ -5,7 +5,7 @@ Description: Style all WordPress emails with WooCommerce templates
 Plugin URI: http://www.trysmudford.com
 Author: Trys Mudford
 Author URI: http://www.trysmudford.com
-Version: 1.0
+Version: 1.01
 */
 
 
@@ -19,7 +19,7 @@ function uwt_wp_mail( $atts ) {
 
 	global $uwt_woocommerce;
 	
-	if ( ! $uwt_woocommerce ) {
+	if ( ! $uwt_woocommerce && class_exists( 'WooCommerce' ) ) {
 		$atts[ 'message' ] = uwt_style_message( $atts[ 'message' ], $atts[ 'subject' ] );
 		$atts[ 'headers' ][] = 'from:' . wp_specialchars_decode( esc_html( get_bloginfo( 'name' ) ), ENT_QUOTES ) . ' <' . get_bloginfo( 'admin_email' ) . '>';
 	}
@@ -51,7 +51,7 @@ function uwt_style_message( $message, $subject ) {
 	$css = ob_get_clean();
 
 	if ( ! class_exists( 'Emogrifier' ) && class_exists( 'DOMDocument' ) ) {
-		include_once( dirname( __FILE__ ) . '/../woocommerce/includes/libraries/class-emogrifier.php' );
+		include_once( dirname( WC_PLUGIN_FILE ) . '/includes/libraries/class-emogrifier.php' );
 	}
 
 	try {
